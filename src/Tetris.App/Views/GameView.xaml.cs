@@ -24,6 +24,8 @@ public partial class GameView : UserControl
     private int _horizontalDirection;
     private double _repeatTimer;
     private bool _softDropHeld;
+    private bool _leftHeld;
+    private bool _rightHeld;
 
     public GameView()
     {
@@ -51,6 +53,8 @@ public partial class GameView : UserControl
         _horizontalDirection = 0;
         _repeatTimer = 0;
         _softDropHeld = false;
+        _leftHeld = false;
+        _rightHeld = false;
         PauseButton.Content = "ポーズ (P)";
 
         ModeText.Text = mode == GameMode.Stage ? "STAGE MODE" : "INFINITE MODE";
@@ -93,6 +97,7 @@ public partial class GameView : UserControl
             case Key.Left:
                 if (!isRepeat)
                 {
+                    _leftHeld = true;
                     StartHorizontal(-1);
                 }
 
@@ -100,6 +105,7 @@ public partial class GameView : UserControl
             case Key.Right:
                 if (!isRepeat)
                 {
+                    _rightHeld = true;
                     StartHorizontal(1);
                 }
 
@@ -140,6 +146,8 @@ public partial class GameView : UserControl
         _horizontalDirection = 0;
         _repeatTimer = MoveRepeatDelaySeconds;
         _softDropHeld = false;
+        _leftHeld = false;
+        _rightHeld = false;
         if (_game is not null)
         {
             _game.SoftDropping = false;
@@ -157,18 +165,12 @@ public partial class GameView : UserControl
         switch (key)
         {
             case Key.Left:
-                if (_horizontalDirection < 0)
-                {
-                    _horizontalDirection = 0;
-                }
-
+                _leftHeld = false;
+                ResumeHorizontalAfterRelease();
                 return true;
             case Key.Right:
-                if (_horizontalDirection > 0)
-                {
-                    _horizontalDirection = 0;
-                }
-
+                _rightHeld = false;
+                ResumeHorizontalAfterRelease();
                 return true;
             case Key.Down:
                 _softDropHeld = false;
@@ -189,6 +191,23 @@ public partial class GameView : UserControl
         _horizontalDirection = direction;
         _repeatTimer = MoveRepeatDelaySeconds;
         Move(direction);
+    }
+
+    /// <summary>片方の横移動キーを離したとき、もう片方が押されたままならその方向へ復帰する。</summary>
+    private void ResumeHorizontalAfterRelease()
+    {
+        var direction = (_leftHeld ? -1 : 0) + (_rightHeld ? 1 : 0);
+        if (direction == 0)
+        {
+            _horizontalDirection = 0;
+            _repeatTimer = MoveRepeatDelaySeconds;
+            return;
+        }
+
+        if (direction != _horizontalDirection)
+        {
+            StartHorizontal(direction);
+        }
     }
 
     private void Move(int direction)

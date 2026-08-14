@@ -6,7 +6,7 @@ public sealed class StageSet
     public const string ResourceName = "Tetris.Core.Stages.csv";
     public const int ExpectedStageCount = 20;
 
-    private static StageSet? _embedded;
+    private static readonly Lazy<StageSet> LazyEmbedded = new(LoadEmbedded, LazyThreadSafetyMode.ExecutionAndPublication);
 
     private StageSet(IReadOnlyList<StageData> stages)
     {
@@ -20,7 +20,7 @@ public sealed class StageSet
     public StageData this[int number] => Stages[number - 1];
 
     /// <summary>埋め込みリソースから読み込む（初回のみ解析）。</summary>
-    public static StageSet Embedded => _embedded ??= LoadEmbedded();
+    public static StageSet Embedded => LazyEmbedded.Value;
 
     public static StageSet LoadEmbedded()
     {
