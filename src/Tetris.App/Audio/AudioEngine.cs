@@ -80,7 +80,7 @@ public sealed class AudioEngine : IDisposable
 
     public void StartBgm()
     {
-        if (_mixer is null || _bgmPlaying)
+        if (_mixer is null || !IsAvailable || _bgmPlaying)
         {
             return;
         }
@@ -102,7 +102,7 @@ public sealed class AudioEngine : IDisposable
 
     public void Play(SoundEffect effect)
     {
-        if (_mixer is null)
+        if (_mixer is null || !IsAvailable)
         {
             return;
         }

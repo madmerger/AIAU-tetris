@@ -44,6 +44,7 @@ public partial class MainWindow : Window
         UpdateMuteButton();
         UpdateModeSelection();
         CompositionTarget.Rendering += OnRendering;
+        Deactivated += (_, _) => ClearHeldKeys();
         Closed += (_, _) =>
         {
             CompositionTarget.Rendering -= OnRendering;
@@ -209,8 +210,20 @@ public partial class MainWindow : Window
         UpdateVisuals();
     }
 
+    /// <summary>Alt+Tab などで KeyUp を取り逃した場合に押下状態が残らないようにする。</summary>
+    private void ClearHeldKeys()
+    {
+        _leftHeld = false;
+        _rightHeld = false;
+        if (_game is not null)
+        {
+            _game.SoftDropping = false;
+        }
+    }
+
     private void ReturnToModeSelect()
     {
+        ClearHeldKeys();
         _audio.StopBgm();
         _game = null;
         GameView.Visibility = Visibility.Collapsed;
@@ -325,6 +338,12 @@ public partial class MainWindow : Window
                 e.Handled = true;
                 break;
         }
+    }
+
+    protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
+    {
+        base.OnLostKeyboardFocus(e);
+        ClearHeldKeys();
     }
 
     protected override void OnPreviewKeyUp(KeyEventArgs e)
