@@ -49,6 +49,7 @@ public partial class GameView : UserControl
         Board.Game = _game;
         _horizontalDirection = 0;
         _repeatTimer = 0;
+        PauseButton.Content = "ポーズ (P)";
 
         ModeText.Text = mode == GameMode.Stage ? "STAGE MODE" : "INFINITE MODE";
         var stageVisibility = mode == GameMode.Stage ? Visibility.Visible : Visibility.Collapsed;
@@ -127,6 +128,17 @@ public partial class GameView : UserControl
                 return true;
             default:
                 return false;
+        }
+    }
+
+    /// <summary>ウィンドウが非アクティブになるなどで KeyUp を取りこぼした場合に入力状態を初期化する。</summary>
+    public void ResetInputState()
+    {
+        _horizontalDirection = 0;
+        _repeatTimer = MoveRepeatDelaySeconds;
+        if (_game is not null)
+        {
+            _game.SoftDropping = false;
         }
     }
 
@@ -250,6 +262,7 @@ public partial class GameView : UserControl
     {
         if (_horizontalDirection == 0 || _game is null || _game.Phase != GamePhase.Playing)
         {
+            _repeatTimer = MoveRepeatDelaySeconds;
             return;
         }
 
@@ -282,6 +295,10 @@ public partial class GameView : UserControl
                     _audio?.Play(SoundEffect.StageClear);
                     _audio?.StopBgm();
                     break;
+                case GameEventType.AllClearFinished:
+                    StopGame();
+                    BackRequested?.Invoke(this, EventArgs.Empty);
+                    return;
                 case GameEventType.GameOver:
                     _audio?.StopBgm();
                     break;

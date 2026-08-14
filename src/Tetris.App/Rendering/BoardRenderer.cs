@@ -172,7 +172,7 @@ public sealed class BoardRenderer : FrameworkElement
             GamePhase.Paused => ("PAUSE", "P キーで再開"),
             GamePhase.GameOver => ("GAME OVER", "リスタート または モード選択へ"),
             GamePhase.StageClear => ("GAME CLEAR", $"次のステージまで {Math.Ceiling(game.StageClearRemaining):0}"),
-            GamePhase.AllClear => ("ALL CLEAR", "全 20 ステージ制覇"),
+            GamePhase.AllClear => ("ALL CLEAR", $"全 {game.StageCount} ステージ制覇"),
             _ => (null, null),
         };
 

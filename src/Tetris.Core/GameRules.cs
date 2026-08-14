@@ -34,6 +34,9 @@ public enum GameEventType
     LevelUp,
     StageCleared,
     AllCleared,
+
+    /// <summary>ALL CLEAR 表示が終わり、モード選択へ戻るべき。</summary>
+    AllClearFinished,
     GameOver,
 }
 
@@ -47,6 +50,7 @@ public static class GameRules
     public const int LinesPerLevel = 20;
     public const double LineClearAnimationSeconds = 0.3;
     public const double StageClearCountdownSeconds = 3.0;
+    public const double AllClearDisplaySeconds = 5.0;
     public const int HardDropPointsPerCell = 1;
 
     private static readonly int[] LineScores = { 0, 40, 100, 300, 1200 };

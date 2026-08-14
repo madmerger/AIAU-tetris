@@ -21,6 +21,7 @@ public partial class MainWindow : Window
         Game.MuteChanged += OnMuteChanged;
         ModeSelect.StartRequested += OnStartRequested;
         ModeSelect.SelectionChanged += (_, _) => _audio.Play(SoundEffect.MenuMove);
+        Deactivated += (_, _) => Game.ResetInputState();
         Closed += (_, _) => _audio.Dispose();
     }
 

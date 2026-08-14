@@ -62,6 +62,9 @@ public sealed class TetrisGame
     /// <summary>ステージクリア演出の残りカウントダウン秒。</summary>
     public double StageClearRemaining { get; private set; }
 
+    /// <summary>ALL CLEAR 表示の残り秒（0 になるとモード選択へ戻る）。</summary>
+    public double AllClearRemaining { get; private set; }
+
     /// <summary>盤面上に残っているジェム数（STAGE MODE のクリア条件）。</summary>
     public int RemainingGems => Board.CountGems();
 
@@ -88,8 +91,14 @@ public sealed class TetrisGame
             throw new ArgumentOutOfRangeException(nameof(deltaSeconds));
         }
 
-        if (Phase is GamePhase.Paused or GamePhase.GameOver or GamePhase.AllClear)
+        if (Phase is GamePhase.Paused or GamePhase.GameOver)
         {
+            return;
+        }
+
+        if (Phase == GamePhase.AllClear)
+        {
+            CountDownAllClear(deltaSeconds);
             return;
         }
 
@@ -180,6 +189,7 @@ public sealed class TetrisGame
         _clearTimer = 0;
         _clearingRows.Clear();
         StageClearRemaining = 0;
+        AllClearRemaining = 0;
         _events.Clear();
         StageNumber = Mode == GameMode.Stage ? stageNumber : 0;
 
@@ -204,11 +214,27 @@ public sealed class TetrisGame
         if (StageNumber >= _stages.Count)
         {
             Phase = GamePhase.AllClear;
+            AllClearRemaining = GameRules.AllClearDisplaySeconds;
             _events.Add(GameEventType.AllCleared);
             return;
         }
 
         StartStage(StageNumber + 1);
+    }
+
+    private void CountDownAllClear(double deltaSeconds)
+    {
+        if (AllClearRemaining <= 0)
+        {
+            return;
+        }
+
+        AllClearRemaining -= deltaSeconds;
+        if (AllClearRemaining <= 0)
+        {
+            AllClearRemaining = 0;
+            _events.Add(GameEventType.AllClearFinished);
+        }
     }
 
     private void AdvanceFall(double deltaSeconds)
@@ -269,7 +295,8 @@ public sealed class TetrisGame
             return;
         }
 
-        Score += GameRules.LineClearScore(fullRows.Count, Level);
+        // 不正なステージデータで 5 行以上同時に揃った場合もスコア計算で落ちないようにする。
+        Score += GameRules.LineClearScore(Math.Min(fullRows.Count, 4), Level);
         TotalLines += fullRows.Count;
 
         var newLevel = GameRules.LevelForLines(TotalLines);

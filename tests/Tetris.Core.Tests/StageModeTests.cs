@@ -89,6 +89,28 @@ public class StageModeTests
     }
 
     [Fact]
+    public void AllClearFinishesAfterDisplayDuration()
+    {
+        var game = NewStageGame(1);
+
+        TetrisGameTests.DropVerticalIAt(game, column: 9);
+        game.Update(GameRules.StageClearCountdownSeconds);
+        Assert.Equal(GamePhase.AllClear, game.Phase);
+        Assert.Equal(GameRules.AllClearDisplaySeconds, game.AllClearRemaining);
+
+        game.Update(GameRules.AllClearDisplaySeconds - 0.1);
+        Assert.DoesNotContain(GameEventType.AllClearFinished, game.DrainEvents());
+
+        game.Update(0.2);
+        Assert.Equal(0, game.AllClearRemaining);
+        Assert.Contains(GameEventType.AllClearFinished, game.DrainEvents());
+
+        // 通知は一度だけ。
+        game.Update(1.0);
+        Assert.DoesNotContain(GameEventType.AllClearFinished, game.DrainEvents());
+    }
+
+    [Fact]
     public void InputIsDiscardedDuringStageClearAnimation()
     {
         var game = NewStageGame(2);
