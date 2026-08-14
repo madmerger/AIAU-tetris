@@ -45,7 +45,7 @@ public static class ToneSynth
     {
         var period = SampleRate / frequency;
         // クリック音を避けるため、前後 8ms でフェードイン/アウトし、末尾に短い無音を残す。
-        var fade = Math.Min((int)(0.008 * SampleRate), length / 4);
+        var fade = Math.Max(1, Math.Min((int)(0.008 * SampleRate), length / 4));
         var sustain = (int)(length * 0.88);
 
         for (var i = 0; i < sustain; i++)
