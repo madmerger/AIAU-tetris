@@ -367,7 +367,7 @@ public partial class GameView : UserControl
 
         _game.Restart();
         PauseButton.Content = "ポーズ (P)";
-        _horizontalDirection = 0;
+        ResetInputState();
         if (_audio is not null)
         {
             _audio.PauseMuted = false;
