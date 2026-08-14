@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{553DD422-D596-426B-ADAC-185F81C0DFFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris.Core", "src\Tetris.Core\Tetris.Core.csproj", "{F62D77FC-582D-47E2-8B43-99BB7B2A49FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris.App", "src\Tetris.App\Tetris.App.csproj", "{44432B7E-B917-4C92-9386-7241CDDACE26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C6821CE3-B6C6-43BD-A38C-BBFE5867D85D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetris.Core.Tests", "tests\Tetris.Core.Tests\Tetris.Core.Tests.csproj", "{52289B8E-9DEA-4F59-99A3-1C3CD42F9288}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F62D77FC-582D-47E2-8B43-99BB7B2A49FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F62D77FC-582D-47E2-8B43-99BB7B2A49FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F62D77FC-582D-47E2-8B43-99BB7B2A49FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F62D77FC-582D-47E2-8B43-99BB7B2A49FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44432B7E-B917-4C92-9386-7241CDDACE26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44432B7E-B917-4C92-9386-7241CDDACE26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44432B7E-B917-4C92-9386-7241CDDACE26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44432B7E-B917-4C92-9386-7241CDDACE26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52289B8E-9DEA-4F59-99A3-1C3CD42F9288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52289B8E-9DEA-4F59-99A3-1C3CD42F9288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52289B8E-9DEA-4F59-99A3-1C3CD42F9288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52289B8E-9DEA-4F59-99A3-1C3CD42F9288}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F62D77FC-582D-47E2-8B43-99BB7B2A49FC} = {553DD422-D596-426B-ADAC-185F81C0DFFB}
+		{44432B7E-B917-4C92-9386-7241CDDACE26} = {553DD422-D596-426B-ADAC-185F81C0DFFB}
+		{52289B8E-9DEA-4F59-99A3-1C3CD42F9288} = {C6821CE3-B6C6-43BD-A38C-BBFE5867D85D}
+	EndGlobalSection
+EndGlobal
