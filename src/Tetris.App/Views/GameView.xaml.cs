@@ -23,6 +23,7 @@ public partial class GameView : UserControl
     private long _lastTicks;
     private int _horizontalDirection;
     private double _repeatTimer;
+    private bool _softDropHeld;
 
     public GameView()
     {
@@ -49,6 +50,7 @@ public partial class GameView : UserControl
         Board.Game = _game;
         _horizontalDirection = 0;
         _repeatTimer = 0;
+        _softDropHeld = false;
         PauseButton.Content = "ポーズ (P)";
 
         ModeText.Text = mode == GameMode.Stage ? "STAGE MODE" : "INFINITE MODE";
@@ -103,6 +105,7 @@ public partial class GameView : UserControl
 
                 return true;
             case Key.Down:
+                _softDropHeld = true;
                 _game.SoftDropping = true;
                 return true;
             case Key.Up:
@@ -136,6 +139,7 @@ public partial class GameView : UserControl
     {
         _horizontalDirection = 0;
         _repeatTimer = MoveRepeatDelaySeconds;
+        _softDropHeld = false;
         if (_game is not null)
         {
             _game.SoftDropping = false;
@@ -167,6 +171,7 @@ public partial class GameView : UserControl
 
                 return true;
             case Key.Down:
+                _softDropHeld = false;
                 _game.SoftDropping = false;
                 return true;
             default:
@@ -250,6 +255,8 @@ public partial class GameView : UserControl
         var delta = Math.Min((double)(ticks - _lastTicks) / Stopwatch.Frequency, MaxFrameSeconds);
         _lastTicks = ticks;
 
+        // ピース出現時に Core 側で SoftDropping がリセットされるので、毎フレーム ↓ の押下状態を反映する。
+        _game.SoftDropping = _softDropHeld;
         UpdateHorizontalRepeat(delta);
         _game.Update(delta);
         ProcessGameEvents();
