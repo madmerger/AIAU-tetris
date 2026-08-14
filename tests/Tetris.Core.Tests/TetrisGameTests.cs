@@ -45,6 +45,20 @@ public class TetrisGameTests
     }
 
     [Fact]
+    public void SoftDropDoesNotConsumeAccumulatedFallTimer()
+    {
+        var game = NewInfiniteGame();
+
+        game.Update(0.7);
+        Assert.Equal(0, game.Current.Y);
+
+        game.SoftDropping = true;
+        game.Update(0.02);
+
+        Assert.Equal(1, game.Current.Y);
+    }
+
+    [Fact]
     public void MovementStopsAtWalls()
     {
         var game = NewInfiniteGame(PieceType.O);

@@ -245,6 +245,8 @@ public sealed class TetrisGame
             interval /= GameRules.SoftDropMultiplier;
         }
 
+        // 落下間隔が縮んだフレームで蓄積分が一気に消化され、複数マス瞬間移動するのを防ぐ。
+        _fallTimer = Math.Min(_fallTimer, interval);
         _fallTimer += deltaSeconds;
         while (Phase == GamePhase.Playing && _fallTimer >= interval)
         {
