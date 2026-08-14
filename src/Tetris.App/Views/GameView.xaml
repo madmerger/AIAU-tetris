@@ -1,0 +1,52 @@
+<UserControl x:Class="Tetris.App.Views.GameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rendering="clr-namespace:Tetris.App.Rendering"
+             Background="{StaticResource BackgroundBrush}">
+    <!-- Viewbox によってウィンドウのリサイズ時もアスペクト比を維持してスケーリングする。 -->
+    <Viewbox Stretch="Uniform" Margin="16">
+        <Grid Width="620" Height="660">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="330" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <rendering:BoardRenderer x:Name="Board" Grid.Column="0" Width="320" Height="640" />
+
+            <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                <TextBlock x:Name="ModeText"
+                           Text="STAGE MODE"
+                           FontFamily="Consolas"
+                           FontSize="18"
+                           Foreground="{StaticResource AccentBrush}"
+                           Margin="0,0,0,10" />
+
+                <TextBlock Text="NEXT" Style="{StaticResource LabelText}" />
+                <rendering:NextPreview x:Name="Next" Width="120" Height="90" HorizontalAlignment="Left" Margin="0,4,0,12" />
+
+                <TextBlock Text="TIME" Style="{StaticResource LabelText}" />
+                <TextBlock x:Name="TimeText" Text="00:00:00" Style="{StaticResource ValueText}" />
+
+                <TextBlock Text="SCORE" Style="{StaticResource LabelText}" />
+                <TextBlock x:Name="ScoreText" Text="0" Style="{StaticResource ValueText}" />
+
+                <TextBlock Text="LEVEL" Style="{StaticResource LabelText}" />
+                <TextBlock x:Name="LevelText" Text="1" Style="{StaticResource ValueText}" />
+
+                <TextBlock Text="LINES" Style="{StaticResource LabelText}" />
+                <TextBlock x:Name="LinesText" Text="0" Style="{StaticResource ValueText}" />
+
+                <TextBlock x:Name="StageLabel" Text="STAGE" Style="{StaticResource LabelText}" />
+                <TextBlock x:Name="StageText" Text="1 / 20" Style="{StaticResource ValueText}" />
+
+                <TextBlock x:Name="GemLabel" Text="GEMS" Style="{StaticResource LabelText}" />
+                <TextBlock x:Name="GemText" Text="0" Style="{StaticResource ValueText}" />
+
+                <Button x:Name="PauseButton" Content="ポーズ (P)" Click="OnPauseClicked" />
+                <Button x:Name="RestartButton" Content="リスタート" Click="OnRestartClicked" />
+                <Button x:Name="MuteButton" Content="ミュート: OFF" Click="OnMuteClicked" />
+                <Button x:Name="BackButton" Content="モード選択へ戻る" Click="OnBackClicked" />
+            </StackPanel>
+        </Grid>
+    </Viewbox>
+</UserControl>
