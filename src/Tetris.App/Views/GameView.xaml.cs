@@ -95,7 +95,8 @@ public partial class GameView : UserControl
         switch (key)
         {
             case Key.Left:
-                if (!isRepeat)
+                // 非アクティブ化で押下状態を捨てた後はリピートしか届かないため、押下記録が無ければ受け直す。
+                if (!isRepeat || !_leftHeld)
                 {
                     _leftHeld = true;
                     StartHorizontal(-1);
@@ -103,7 +104,7 @@ public partial class GameView : UserControl
 
                 return true;
             case Key.Right:
-                if (!isRepeat)
+                if (!isRepeat || !_rightHeld)
                 {
                     _rightHeld = true;
                     StartHorizontal(1);
